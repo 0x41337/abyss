@@ -1,0 +1,13 @@
+{
+    "XGBRegressor": {
+        "n_estimators": 300,
+        "learning_rate": 1.0,
+        "max_depth": 4,
+        "min_child_weight": 3,
+        "subsample": 1.0,
+        "colsample_bytree": 1.0,
+        "gamma": 0,
+        "reg_alpha": 1,
+        "reg_lambda": 0.5
+    }
+}

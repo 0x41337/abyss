@@ -1,0 +1,10 @@
+{
+  "data": {
+    "start": "2020-1-1",
+    "end": "2024-12-31"
+  },
+  "outputs": {
+    "raw": "dist/abyss.json",
+    "pickle": "dist/abyss.pkl"
+  }
+}
