@@ -1,31 +1,41 @@
 from data import df
-from features import f1, f2, f3
+from features import RSI, EMA, MACD, LogReturn, Volatility, BollingerBands
 
 from xgboost import XGBRegressor
-from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import train_test_split
 
 # Generate the indicators
-df["EMA"] = f1()
-df["MACD"] = f2()
-df["RSI"] = f3()
+df["EMA"] = EMA()
+df["MACD"] = MACD()
+df["RSI"] = RSI()
+df["LogReturn"] = LogReturn()
+df["Volatility"] = Volatility()
+df["Upper Band"], df["Lower Band"] = BollingerBands()
 
 # Define independent (X) and dependent (y) variables
-X = df[["Open", "High", "Low", "Close", "Volume", "EMA", "MACD", "RSI"]]
+X = df[
+    [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume",
+        "EMA",
+        "MACD",
+        "RSI",
+        "LogReturn",
+        "Volatility",
+        "Upper Band",
+        "Lower Band",
+    ]
+]
 y = df["Close"]
-
-# Initialize the Scaler
-scaler = StandardScaler()
 
 # Split into training and testing
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
-
-# Scaling training and testing data
-X_train_scaled = scaler.fit_transform(X_train)
-X_test_scaled = scaler.transform(X_test)
 
 # Defining the grid of hyperparameters for tuning
 param_dist = {
@@ -47,7 +57,7 @@ grid_search = GridSearchCV(
 )
 
 # Fit the model to the data
-grid_search.fit(X_train_scaled, y_train)
+grid_search.fit(X_train, y_train)
 
 # Output the best parameters and best score
 print("Best set of hyperparameters: ", grid_search.best_params_)
