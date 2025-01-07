@@ -1,5 +1,5 @@
 from data import df
-from features import RSI, EMA, MACD, LogReturn, Volatility, BollingerBands
+from features import RSI, EMA, MACD, Momentum, LogReturn, Volatility, BollingerBands
 
 from xgboost import XGBRegressor
 from sklearn.model_selection import GridSearchCV
@@ -9,6 +9,7 @@ from sklearn.model_selection import train_test_split
 df["EMA"] = EMA()
 df["MACD"] = MACD()
 df["RSI"] = RSI()
+df["Momentum"] = Momentum()
 df["LogReturn"] = LogReturn()
 df["Volatility"] = Volatility()
 df["Upper Band"], df["Lower Band"] = BollingerBands()
@@ -20,6 +21,7 @@ X = df[
         "High",
         "Low",
         "Close",
+        "Momentum",
         "Volume",
         "EMA",
         "MACD",
@@ -39,15 +41,11 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 # Defining the grid of hyperparameters for tuning
 param_dist = {
-    "n_estimators": [300, 400],
-    "learning_rate": [0.001, 0.1, 0.2],
-    "max_depth": [3, 4],
+    "n_estimators": [300],
+    "learning_rate": [0.05, 0.1, 0.15],
+    "max_depth": [3, 4, 5],
     "min_child_weight": [1, 3],
-    "subsample": [0.8, 1.0],
-    "colsample_bytree": [0.8, 1.0],
-    "gamma": [0, 0.1],
-    "reg_alpha": [0.5, 1],
-    "reg_lambda": [0.5, 1],
+    "colsample_bytree": [0.4, 0.5, 0.6],
 }
 
 # Perform GridSearchCV with XGBRegressor
