@@ -24,7 +24,7 @@ You can access the full article [here](https://arxiv.org/abs/2407.11786).
 
 -   I. **Data Collection**: Historical Bitcoin data is automatically downloaded from Yahoo Finance. ([BTC-USD](https://finance.yahoo.com/quote/BTC-USD/))
 
--   II. **Pre-processing**: Data is normalized and technical indicators are calculated.
+-   II. **Pre-processing**: Technical indicators are calculated.
 
 -   III. **Model Training**: The [XGBoost](https://xgboost.readthedocs.io/en/stable/) model is trained to predict Bitcoin closing prices.
 
