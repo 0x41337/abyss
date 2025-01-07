@@ -1,10 +1,11 @@
 {
-  "data": {
-    "start": "2024-12-1",
-    "end": "2025-1-7"
-  },
-  "outputs": {
-    "raw": "dist/abyss.json",
-    "pickle": "dist/abyss.pkl"
-  }
+    "data": {
+        "start": "2024-12-1",
+        "end": "2025-1-7"
+    },
+    "outputs": {
+        "raw": "dist/abyss.json",
+        "onnx": "dist/abyss.onnx",
+        "pickle": "dist/abyss.pkl"
+    }
 }
