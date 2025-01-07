@@ -2,9 +2,11 @@
     Example of daily forecast using monthly data.
 """
 
+import numpy as np
 import pickle as pk
 import pandas as pd
 import yfinance as yf
+
 
 # EMA (Exponential Moving Average)
 def EMA(span=10):
@@ -27,6 +29,15 @@ def RSI(window=14):
     return 100 - (100 / (1 + rs))
 
 
+# Logarithmic returns
+def LogReturn():
+    return np.log(df["Close"] / df["Close"].shift(1))
+
+# Volatility
+def Volatility(window=10):
+    return df["Close"].rolling(window).std()
+
+
 # Bollinger Bands
 def BollingerBands(window=20):
     rolling_mean = df["Close"].rolling(window=window).mean()
@@ -47,6 +58,8 @@ df = yf.download("BTC-USD", period="1mo", progress=False)
 df["EMA"] = EMA()
 df["MACD"] = MACD()
 df["RSI"] = RSI()
+df["LogReturn"] = LogReturn()
+df["Volatility"] = Volatility()
 df["Upper Band"], df["Lower Band"] = BollingerBands()
 
 # Define independent (X) and dependent (y) variables
@@ -60,6 +73,8 @@ X = df[
         "EMA",
         "MACD",
         "RSI",
+        "LogReturn",
+        "Volatility",
         "Upper Band",
         "Lower Band",
     ]
