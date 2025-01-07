@@ -54,7 +54,7 @@ def Momentum(window=10):
 
 
 # Load ONNX model using onnxruntime
-onnx_model_path = "dist/abyss.onnx"  # Substitua com o caminho do seu modelo ONNX
+onnx_model_path = "dist/abyss.onnx"
 session = ort.InferenceSession(onnx_model_path)
 
 # Get data for the entire month
@@ -101,7 +101,7 @@ forecast = session.run(None, {input_name: X_input})[0]
 forecast_df = pd.DataFrame(
     {
         "Date": df.index,
-        "Predicted Close": forecast.flatten(),  # Flatten to match the shape
+        "Predicted Close": forecast.flatten(),
         "Real Close": df["Close"].values.ravel(),
     }
 )
