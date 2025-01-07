@@ -1,5 +1,10 @@
+onnx==1.17.0
 numpy==2.2.1
 pandas==2.2.3
 xgboost==2.1.3
 yfinance==0.2.51
+skl2onnx==1.18.0
+onnxruntime==1.20.1
+onnxmltools==1.13.0
 scikit-learn==1.5.2
+onnxconverter-common==1.14.0
