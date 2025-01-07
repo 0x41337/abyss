@@ -2,10 +2,10 @@ import numpy as np
 import pandas as pd
 
 from data import df
-from features import RSI, EMA, MACD, LogReturn, Volatility, BollingerBands
+from features import RSI, EMA, MACD, Momentum, LogReturn, Volatility, BollingerBands
 from settings import load_config
 
-from export import save_model, save_model_json
+from export import save_model, save_model_onnx, save_model_json
 
 from xgboost import XGBRegressor
 
@@ -18,6 +18,7 @@ _, hyperparameters = load_config()
 df["EMA"] = EMA()
 df["MACD"] = MACD()
 df["RSI"] = RSI()
+df["Momentum"] = Momentum()
 df["LogReturn"] = LogReturn()
 df["Volatility"] = Volatility()
 df["Upper Band"], df["Lower Band"] = BollingerBands()
@@ -29,6 +30,7 @@ X = df[
         "High",
         "Low",
         "Close",
+        "Momentum",
         "Volume",
         "EMA",
         "MACD",
@@ -45,6 +47,10 @@ y = df["Close"]
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
+
+# Change column names to support ONNX
+X_train.columns = [f"f{i}" for i in range(X_train.shape[1])]
+X_test.columns = X_train.columns
 
 # Define the model
 model = XGBRegressor(
@@ -94,6 +100,7 @@ print(feature_importance_df.to_string(index=False))
 # Save the model and JSON file
 try:
     save_model(model)
+    save_model_onnx(model, input_shape=X_train.shape)
     save_model_json(model)
     print("\nModel and JSON files saved successfully!")
 except Exception as e:
