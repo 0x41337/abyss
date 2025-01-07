@@ -6,7 +6,7 @@
 
 This project aims to predict cryptocurrency prices, specifically Bitcoin, using machine learning techniques. With the cryptocurrency market being highly volatile, accurate price prediction is challenging but essential for traders and investors to make informed decisions.
 
-The proposed solution uses an XGBoost regression model trained with popular technical indicators such as **Exponential Moving Average (EMA), Moving Average Convergence Divergence (MACD)**, and **Relative Strength Index (RSI)**. The model is trained with historical Bitcoin price data and evaluated for accuracy using metrics such as **MAE (Mean Absolute Error)**, **RMSE (Root Mean Squared Error)**, and **R²**.
+The proposed solution uses an XGBoost regression model trained with popular technical indicators such as **Exponential Moving Average (EMA), Moving Average Convergence Divergence (MACD)**, and **Relative Strength Index (RSI)** and and other indicators. The model is trained with historical Bitcoin price data (1mo) and evaluated for accuracy using metrics such as **MAE (Mean Absolute Error)**, **RMSE (Root Mean Squared Error)**, and **R²**.
 
 ## Reference Paper
 
