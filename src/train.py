@@ -2,45 +2,50 @@ import numpy as np
 import pandas as pd
 
 from data import df
-from features import f1, f2, f3
+from features import RSI, EMA, MACD, BollingerBands
 from settings import load_config
 
 from export import save_model, save_model_json
 
 from xgboost import XGBRegressor
 
-from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 _, hyperparameters = load_config()
 
 # Generate the indicators
-df["EMA"] = f1()
-df["MACD"] = f2()
-df["RSI"] = f3()
+df["EMA"] = EMA()
+df["MACD"] = MACD()
+df["RSI"] = RSI()
+df["Upper Band"], df["Lower Band"] = BollingerBands()
 
 # Define independent (X) and dependent (y) variables
-X = df[["Open", "High", "Low", "Close", "Volume", "EMA", "MACD", "RSI"]]
+X = df[
+    [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume",
+        "EMA",
+        "MACD",
+        "RSI",
+        "Upper Band",
+        "Lower Band",
+    ]
+]
 y = df["Close"]
-
-# Initialize the Scaler
-scaler = StandardScaler()
 
 # Split into training and testing
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
 
-# Scaling training and testing data
-X_train_scaled = scaler.fit_transform(
-    X_train
-)  # Calculates mean and standard deviation based on training
-X_test_scaled = scaler.transform(X_test)  # Apply the same scaling in the test
-
 # Define the model
 model = XGBRegressor(
     n_estimators=hyperparameters["XGBRegressor"]["n_estimators"],
+    early_stopping_rounds=hyperparameters["XGBRegressor"]["early_stopping_rounds"],
     learning_rate=hyperparameters["XGBRegressor"]["learning_rate"],
     max_depth=hyperparameters["XGBRegressor"]["max_depth"],
     min_child_weight=hyperparameters["XGBRegressor"]["min_child_weight"],
@@ -53,13 +58,13 @@ model = XGBRegressor(
 
 # Train the model
 try:
-    model.fit(X_train_scaled, y_train)
+    model.fit(X_train, y_train, eval_set=[(X_test, y_test)])
 except Exception as error:
     print(f"Error during model training: {error}")
     exit()
 
 # Make predictions
-y_pred = model.predict(X_test_scaled)
+y_pred = model.predict(X_test)
 
 # Calculate evaluation metrics
 r2 = r2_score(y_test, y_pred)
