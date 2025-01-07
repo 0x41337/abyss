@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 from data import df
-from features import RSI, EMA, MACD, BollingerBands
+from features import RSI, EMA, MACD, LogReturn, Volatility, BollingerBands
 from settings import load_config
 
 from export import save_model, save_model_json
@@ -18,6 +18,8 @@ _, hyperparameters = load_config()
 df["EMA"] = EMA()
 df["MACD"] = MACD()
 df["RSI"] = RSI()
+df["LogReturn"] = LogReturn()
+df["Volatility"] = Volatility()
 df["Upper Band"], df["Lower Band"] = BollingerBands()
 
 # Define independent (X) and dependent (y) variables
@@ -31,6 +33,8 @@ X = df[
         "EMA",
         "MACD",
         "RSI",
+        "LogReturn",
+        "Volatility",
         "Upper Band",
         "Lower Band",
     ]
